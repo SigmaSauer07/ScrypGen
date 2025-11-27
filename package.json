@@ -34,17 +34,20 @@
     "nemo",
     "kde-connect",
     "alsania",
-    "ai-powered"
+    "ai-powered",
+    "gui",
+    "electron",
+    "desktop-app"
   ],
   "author": "Sigma <sigma@alsania.dev>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/alsania/universal-script-generator.git"
+    "url": "https://github.com/alsania-io/scrypgen.git"
   },
   "engines": {
-    "node": ">=16.0.0",
-    "python": ">=3.8.0"
+    "node": ">=18.0.0",
+    "python": ">=3.13.2"
   },
   "dependencies": {
     "@genkit-ai/mcp": "^1.21.0",
@@ -52,7 +55,7 @@
     "chalk": "^5.3.0",
     "commander": "^11.0.0",
     "compromise": "^14.10.0",
-    "electron": "^25.0.0",
+    "electron": "^39.1.0",
     "fs-extra": "^11.1.1",
     "handlebars": "^4.7.8",
     "inquirer": "^9.2.0",

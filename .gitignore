@@ -155,4 +155,11 @@ out/
 .yarnrc
 
 #Ignore vscode AI rules
+.github/
 .github/instructions/codacy.instructions.md
+.vscode/ai-settings.json
+.vscode/ai-workspace.json
+.vscode/ai-global.json
+.vscode/
+
+deprecated/

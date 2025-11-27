@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 /**
  * ScrypGen - CLI Interface
  * Alsania aligned - built by Sigma, powered by Echo
@@ -145,6 +144,14 @@ class UniversalScriptGeneratorCLI {
         await this.healthCommand();
       });
 
+    // GUI command
+    this.program
+      .command("gui")
+      .description("Launch the graphical user interface")
+      .action(async () => {
+        await this.launchGUI();
+      });
+
     // About command
     this.program
       .command("about")
@@ -212,7 +219,6 @@ class UniversalScriptGeneratorCLI {
             })
           );
         }
-
         // Show integration files
         if (result.integrationFiles && result.integrationFiles.length > 0) {
           console.log(theme.secondary("\n🔗 Integration files generated:"));
@@ -220,7 +226,6 @@ class UniversalScriptGeneratorCLI {
             console.log(theme.dim(`  📄 ${file.filename} (${file.type})`));
           });
         }
-
         // Show warnings and suggestions
         if (result.warnings.length > 0) {
           console.log(theme.warning("\n⚠️  Warnings:"));
@@ -486,6 +491,36 @@ class UniversalScriptGeneratorCLI {
     }
   }
 
+  private async launchGUI(): Promise<void> {
+    this.showHeader();
+
+    console.log(theme.primary("🚀 Launching ScrypGen GUI..."));
+    console.log(theme.secondary("If the GUI doesn't open, try: npm run gui"));
+    console.log();
+
+    // Try to launch Electron GUI
+    try {
+      const { spawn } = require("child_process");
+      const electronPath = require("electron");
+
+      const guiProcess = spawn(electronPath, [__dirname + "/../gui/main.js"], {
+        stdio: "inherit",
+        detached: true,
+      });
+
+      guiProcess.unref();
+
+      console.log(theme.success("✨ GUI launched successfully!"));
+      console.log(theme.dim("The application window should open momentarily."));
+    } catch (error) {
+      console.log(
+        theme.error(`💥 Failed to launch GUI: ${(error as Error).message}`)
+      );
+      console.log(theme.secondary("Try running: npm run gui"));
+      process.exit(1);
+    }
+  }
+
   private showHeader(): void {
     const header = boxen(
       theme.primary("🔮 ScrypGen") +
@@ -591,7 +626,6 @@ class UniversalScriptGeneratorCLI {
     }
   }
 }
-
 // Run CLI if this file is executed directly
 if (require.main === module) {
   const cli = new UniversalScriptGeneratorCLI();

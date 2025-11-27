@@ -31,4 +31,4 @@ windows:
           cwd: /home/sigma
           is_focused: true
       - layout:
-          cwd: /home/sigma/Desktop/AlsaniaProjects/ScrypGen
+          cwd: /home/sigma/alsania-io/ScrypGen

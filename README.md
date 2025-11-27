@@ -73,6 +73,11 @@ scrypgen kde-transform "ls -la /home"
 
 # Generate Nemo file manager action
 scrypgen nemo-action "Convert images to different formats"
+
+# Launch the GUI application
+scrypgen gui
+# or
+npm run gui
 ```
 
 ### Examples
@@ -96,6 +101,15 @@ scrypgen interactive
 # Follow the beautiful Alsania-themed prompts!
 ```
 
+#### 🖥️ GUI Application
+
+```bash
+scrypgen gui
+# or
+npm run gui
+# Launches the modern Electron-based GUI with Alsania theming
+```
+
 ## 🏗️ Architecture
 
 ```
@@ -108,8 +122,15 @@ src/
 │   └── types.ts            # TypeScript interfaces
 ├── cli/                    # Command-line interface
 │   └── index.ts            # Beautiful Alsania-themed CLI
-├── gui/                    # Electron-based GUI (coming soon)
-├── templates/              # Script templates
+├── gui/                    # Electron-based GUI application
+│   ├── main.js            # Main Electron process
+│   ├── preload.js         # Secure context bridge
+│   └── index.html         # Modern Alsania-themed UI
+├── templates/              # Script templates (JSON-based)
+│   ├── bash/              # Bash script templates
+│   │   └── basic.json     # Basic Bash script template
+│   └── python/            # Python script templates
+│       └── basic.json     # Basic Python script template
 ├── integrations/           # Platform integrations
 │   ├── nemo/              # Nemo file manager
 │   ├── kde/               # KDE Connect
@@ -127,6 +148,7 @@ src/
 | `interactive`               | Interactive wizard mode          | `scrypgen i`                            |
 | `kde-transform <command>`   | Transform for KDE Connect        | `scrypgen kde-transform "git status"`   |
 | `nemo-action <description>` | Generate Nemo action             | `scrypgen nemo-action "compress files"` |
+| `gui`                       | Launch GUI application           | `scrypgen gui`                          |
 | `health`                    | System health check              | `scrypgen health`                       |
 | `about`                     | Show information                 | `scrypgen about`                        |
 
@@ -140,6 +162,18 @@ src/
 | `--kde`                 | Include KDE Connect integration    | `--kde`                        |
 | `--vscode`              | Include VS Code snippets           | `--vscode`                     |
 | `--debug`               | Enable debug mode                  | `--debug`                      |
+
+### GUI Features
+
+| Feature                  | Description                                               |
+| ------------------------ | --------------------------------------------------------- |
+| **Split-Panel Layout**   | Input panel (left) and output panel (right)               |
+| **Real-time Generation** | Instant script generation with live feedback              |
+| **Copy to Clipboard**    | One-click copying of generated scripts                    |
+| **Save Scripts**         | Native file dialogs for saving scripts                    |
+| **Alsania Theming**      | Full neon green/cyan/purple color scheme                  |
+| **Keyboard Shortcuts**   | Ctrl+Enter (generate), Ctrl+S (save), Ctrl+Shift+C (copy) |
+| **Status Messages**      | Color-coded success/error/warning feedback                |
 
 ## 🎨 Alsania Design Language
 
@@ -205,6 +239,9 @@ npm run dev
 # Build and watch for changes
 npm run build:watch
 
+# Launch GUI in development
+npm run gui
+
 # Lint and format code
 npm run lint
 npm run format
@@ -244,6 +281,29 @@ scrypgen generate "FastAPI endpoint with authentication" --vscode
 # Creates .code-snippets file for VS Code
 ```
 
+### 🖥️ GUI Application
+
+Launch the modern Electron-based GUI:
+
+```bash
+scrypgen gui
+# or
+npm run gui
+```
+
+**GUI Features:**
+
+- **Split-panel design** with input (left) and output (right) panels
+- **Real-time generation** with instant feedback
+- **Alsania theming** with neon green, electric cyan, and royal purple
+- **Copy to clipboard** and **save scripts** functionality
+- **Keyboard shortcuts** for power users (Ctrl+Enter to generate, Ctrl+S to save, Ctrl+Shift+C to copy)
+- **Status messages** with color-coded feedback
+- **Responsive layout** that works on different screen sizes
+- **Language selection** (Python/Bash/Auto)
+- **Integration checkboxes** for Nemo, KDE Connect, and VS Code
+- **Template preview** before generation
+
 ## 🤝 Contributing
 
 We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
@@ -267,7 +327,7 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 
 ### Core Classes
 
-#### `Universalscrypgenerator`
+#### `UniversalScriptGenerator`
 
 Main orchestrator class that coordinates all components.
 
@@ -324,6 +384,16 @@ const result = await engine.processTemplate(language, analysis, overrides);
 - Format conversions
 - Content organization
 
+### 🖥️ **GUI Applications**
+
+- Visual script generation interface with Alsania theming
+- Real-time preview and editing with live feedback
+- Drag-and-drop file operations (planned)
+- Template selection and customization
+- Export scripts with proper formatting and syntax highlighting
+- Keyboard shortcuts for power users
+- Responsive design for different screen sizes
+
 ## 🐛 Troubleshooting
 
 ### Common Issues
@@ -333,6 +403,15 @@ const result = await engine.processTemplate(language, analysis, overrides);
 - Check system dependencies: `scrypgen health`
 - Verify Python/Bash installation
 - Enable debug mode: `scrypgen generate "description" --debug`
+- Try the GUI application: `scrypgen gui`
+
+**GUI won't launch**
+
+- Ensure Electron is installed: `npm install`
+- Check Node.js version (16+ required)
+- Try rebuilding: `npm run build`
+- Check if GUI files exist: `ls src/gui/`
+- Try running directly: `npm run gui`
 
 **Template not found**
 
@@ -365,6 +444,7 @@ ScrypGen is part of the larger Alsania ecosystem for digital sovereignty:
 - **[Alsania Desktop](https://github.com/alsania/desktop)**: Native applications
 - **[Alsania Mobile](https://github.com/alsania/mobile)**: Mobile integration
 - **[Alsania Web](https://github.com/alsania/web)**: Browser extensions
+- **[ScrypGen](https://github.com/alsania/scrypgen)**: AI-powered script generation (CLI + GUI)
 
 ---
 
@@ -374,6 +454,12 @@ ScrypGen is part of the larger Alsania ecosystem for digital sovereignty:
 
 _Every script generated carries the mark of freedom and quality_
 
-**[🌟 Star this project](https://github.com/alsania/universal-script-generator)** • **[🐛 Report Issues](https://github.com/alsania/universal-script-generator/issues)** • **[💬 Join Community](https://discord.gg/alsania)**
+**🚀 Choose Your Interface:**
+
+- **CLI Power Users**: `scrypgen generate "your description"`
+- **GUI Explorers**: `scrypgen gui` for visual script creation
+- **Interactive Mode**: `scrypgen interactive` for guided script generation
+
+**[🌟 Star this project](https://github.com/alsania/scrypgen)** • **[🐛 Report Issues](https://github.com/alsania/scrypgen/issues)** • **[💬 Join Community](https://discord.gg/alsania)**
 
 </div>
