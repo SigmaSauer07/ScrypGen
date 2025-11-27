@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScrypGen - Transform Ideas into Code</title>
+    <style>
+        :root {
+            /* Alsania Color Scheme */
+            --bg-dark: #0a0a0f;
+            --bg-light: #1a1a2e;
+            --neon-green: #00ff7f;
+            --electric-cyan: #00ffff;
+            --royal-purple: #8a2be2;
+            --text-white: #ffffff;
+            --text-gray: #b0b0b0;
+            --text-dim: #666666;
+            --border-color: #333333;
+            --success: #00ff7f;
+            --error: #ff4444;
+            --warning: #ffaa00;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            background: var(--bg-dark);
+            color: var(--text-white);
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--bg-light), var(--bg-dark));
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0, 255, 127, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo h1 {
+            color: var(--neon-green);
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-shadow: 0 0 10px var(--neon-green);
+        }
+
+        .subtitle {
+            color: var(--electric-cyan);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            background: var(--bg-light);
+            border: 1px solid var(--electric-cyan);
+            color: var(--electric-cyan);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: var(--electric-cyan);
+            color: var(--bg-dark);
+            box-shadow: 0 0 15px var(--electric-cyan);
+        }
+
+        .btn.primary {
+            background: var(--neon-green);
+            border-color: var(--neon-green);
+            color: var(--bg-dark);
+        }
+
+        .btn.primary:hover {
+            background: #00cc66;
+            box-shadow: 0 0 15px var(--neon-green);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Left Panel - Input */
+        .input-panel {
+            width: 40%;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-dark);
+        }
+
+        .input-section {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .section-title {
+            color: var(--neon-green);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title::before {
+            content: '🔮';
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-label {
+            display: block;
+            color: var(--electric-cyan);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .input-field {
+            width: 100%;
+            background: var(--bg-light);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-white);
+            padding: 0.75rem;
+            font-family: inherit;
+            font-size: 0.9rem;
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--electric-cyan);
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+        }
+
+        .select-field {
+            width: 100%;
+            background: var(--bg-light);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-white);
+            padding: 0.75rem;
+            font-family: inherit;
+            font-size: 0.9rem;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            accent-color: var(--neon-green);
+        }
+
+        .checkbox-item label {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+        }
+
+        .generate-btn {
+            background: var(--neon-green);
+            border: none;
+            color: var(--bg-dark);
+            padding: 1rem;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .generate-btn:hover {
+            background: #00cc66;
+            box-shadow: 0 0 20px var(--neon-green);
+            transform: translateY(-2px);
+        }
+
+        .generate-btn:disabled {
+            background: var(--text-dim);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Right Panel - Output */
+        .output-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-dark);
+        }
+
+        .output-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .output-title {
+            color: var(--electric-cyan);
+            font-size: 1.1rem;
+        }
+
+        .output-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .output-content {
+            flex: 1;
+            padding: 1.5rem;
+            overflow: auto;
+            position: relative;
+        }
+
+        .code-display {
+            background: var(--bg-light);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1rem;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            color: var(--text-white);
+            min-height: 300px;
+            overflow: auto;
+        }
+
+        .code-display:focus {
+            outline: none;
+            border-color: var(--electric-cyan);
+        }
+
+        .status-panel {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-light);
+        }
+
+        .status-message {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+        }
+
+        .status-message.success {
+            color: var(--success);
+        }
+
+        .status-message.error {
+            color: var(--error);
+        }
+
+        .status-message.warning {
+            color: var(--warning);
+        }
+
+        /* Loading overlay */
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 10, 15, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .loading-content {
+            text-align: center;
+            color: var(--neon-green);
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border-color);
+            border-top: 3px solid var(--neon-green);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+
+            .input-panel {
+                width: 100%;
+                height: 50%;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+
+            .header {
+                padding: 1rem;
+            }
+
+            .logo h1 {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <h1>ScrypGen</h1>
+            <div class="subtitle">Transform Ideas into Code</div>
+        </div>
+        <div class="header-actions">
+            <button class="btn" onclick="showAbout()">About</button>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="input-panel">
+            <div class="input-section">
+                <h2 class="section-title">Script Generation</h2>
+
+                <div class="input-group">
+                    <label class="input-label" for="description">Describe what your script should do:</label>
+                    <textarea
+                        id="description"
+                        class="input-field"
+                        placeholder="e.g., Create a Python script that reads CSV files and generates statistics..."
+                        rows="6"></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label" for="language">Preferred Language:</label>
+                    <select id="language" class="select-field">
+                        <option value="auto">🤖 Auto-detect (recommended)</option>
+                        <option value="python">🐍 Python</option>
+                        <option value="bash">📜 Bash</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Integrations:</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="nemo" value="nemo">
+                            <label for="nemo">📁 Nemo File Manager</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="kde" value="kde">
+                            <label for="kde">📱 KDE Connect</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="vscode" value="vscode">
+                            <label for="vscode">💻 VS Code</label>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="generateBtn" class="generate-btn" onclick="generateScript()">
+                    🔮 Generate Script
+                </button>
+            </div>
+        </div>
+
+        <div class="output-panel">
+            <div class="output-header">
+                <h2 class="output-title">Generated Script</h2>
+                <div class="output-actions">
+                    <button class="btn" onclick="copyToClipboard()">📋 Copy</button>
+                    <button class="btn" onclick="saveScript()">💾 Save</button>
+                </div>
+            </div>
+
+            <div class="output-content">
+                <pre id="codeDisplay" class="code-display" contenteditable="true">// Welcome to ScrypGen!
+// Describe what your script should do in the input panel,
+// then click "Generate Script" to transform your ideas into code.
+
+// Alsania Protocol v1.0 - Built by Sigma, Powered by Echo</pre>
+            </div>
+
+            <div class="status-panel">
+                <div id="statusMessage" class="status-message">
+                    Ready to generate your script. Describe what you need and click Generate!
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Loading overlay (hidden by default) -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div>🔮 Analyzing your request...</div>
+        </div>
+    </div>
+
+    <script>
+        let currentScript = '';
+        let currentLanguage = 'bash';
+
+        async function generateScript() {
+            const description = document.getElementById('description').value.trim();
+            if (!description) {
+                showStatus('Please describe what your script should do.', 'error');
+                return;
+            }
+
+            const language = document.getElementById('language').value;
+            const integrations = [];
+
+            if (document.getElementById('nemo').checked) integrations.push({ type: 'nemo', enabled: true });
+            if (document.getElementById('kde').checked) integrations.push({ type: 'kde-connect', enabled: true });
+            if (document.getElementById('vscode').checked) integrations.push({ type: 'vscode', enabled: true });
+
+            // Show loading
+            showLoading(true);
+            setGenerateButtonState(false);
+
+            try {
+                const request = {
+                    description,
+                    language: language === 'auto' ? undefined : language,
+                    integrations: integrations.length > 0 ? integrations : undefined,
+                    includeTests: false,
+                    includeDocumentation: true
+                };
+
+                const result = await window.electronAPI.generateScript(request);
+
+                if (result.success) {
+                    currentScript = result.code;
+                    currentLanguage = result.language;
+                    document.getElementById('codeDisplay').textContent = result.code;
+                    showStatus(`✅ Script generated successfully! (${result.language.toUpperCase()})`, 'success');
+
+                    // Show warnings if any
+                    if (result.warnings.length > 0) {
+                        setTimeout(() => {
+                            showStatus(`⚠️ Warnings: ${result.warnings.join(', ')}`, 'warning');
+                        }, 2000);
+                    }
+                } else {
+                    showStatus(`❌ Generation failed: ${result.errors.join(', ')}`, 'error');
+                    document.getElementById('codeDisplay').textContent = `// Generation failed
+// Errors: ${result.errors.join('\n// ')}`;
+                }
+            } catch (error) {
+                showStatus(`❌ Error: ${error.message}`, 'error');
+                console.error('Generation error:', error);
+            } finally {
+                showLoading(false);
+                setGenerateButtonState(true);
+            }
+        }
+
+        async function saveScript() {
+            if (!currentScript) {
+                showStatus('No script to save. Generate a script first.', 'warning');
+                return;
+            }
+
+            const suggestedName = `generated_script.${currentLanguage === 'python' ? 'py' : 'sh'}`;
+
+            try {
+                const result = await window.electronAPI.saveScript(currentScript, suggestedName);
+                if (result.success) {
+                    showStatus(`💾 Script saved to: ${result.filePath}`, 'success');
+                }
+            } catch (error) {
+                showStatus(`❌ Save failed: ${error.message}`, 'error');
+            }
+        }
+
+        async function copyToClipboard() {
+            if (!currentScript) {
+                showStatus('No script to copy. Generate a script first.', 'warning');
+                return;
+            }
+
+            try {
+                await navigator.clipboard.writeText(currentScript);
+                showStatus('📋 Script copied to clipboard!', 'success');
+            } catch (error) {
+                showStatus('❌ Failed to copy to clipboard', 'error');
+            }
+        }
+
+        async function showAbout() {
+            await window.electronAPI.showAbout();
+        }
+
+        function showLoading(show) {
+            document.getElementById('loadingOverlay').style.display = show ? 'flex' : 'none';
+        }
+
+        function setGenerateButtonState(enabled) {
+            const btn = document.getElementById('generateBtn');
+            btn.disabled = !enabled;
+            btn.textContent = enabled ? '🔮 Generate Script' : '⏳ Generating...';
+        }
+
+        function showStatus(message, type = '') {
+            const statusEl = document.getElementById('statusMessage');
+            statusEl.textContent = message;
+            statusEl.className = `status-message ${type}`;
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey || e.metaKey) {
+                switch (e.key) {
+                    case 'Enter':
+                        e.preventDefault();
+                        generateScript();
+                        break;
+                    case 's':
+                        e.preventDefault();
+                        saveScript();
+                        break;
+                    case 'c':
+                        if (e.shiftKey) {
+                            e.preventDefault();
+                            copyToClipboard();
+                        }
+                        break;
+                }
+            }
+        });
+
+        // Auto-focus description field
+        document.getElementById('description').focus();
+    </script>
+</body>
+</html>

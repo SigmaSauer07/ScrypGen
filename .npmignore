@@ -1,0 +1,66 @@
+# Dependencies
+node_modules/
+
+# Source code
+src/
+
+# Tests
+tests/
+jest.config.js
+
+# Build scripts
+Makefile
+
+# Documentation (keep README)
+docs/
+*.md
+!README.md
+
+# Examples
+examples/
+
+# Extensions
+extensions/
+
+# Assets (keep icons if needed)
+assets/
+!assets/icons/
+
+# Configuration files
+.env*
+!.env.example
+tsconfig.json
+.codacy/
+.husky/
+.zencoder/
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Temporary files
+*.tmp
+*.temp
+.history/
+
+# Git
+.git/
+.gitignore
+
+# CI/CD
+.github/
+
+# Deprecated
+deprecated/

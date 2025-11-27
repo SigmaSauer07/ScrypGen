@@ -1,0 +1,95 @@
+{
+  "name": "scrypgen",
+  "version": "1.0.0",
+  "description": "Alsania ScrypGen - Transform natural language into powerful scripts with AI assistance",
+  "main": "dist/index.js",
+  "bin": {
+    "scrypgen": "dist/cli/index.js",
+    "sg": "dist/cli/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "concurrently \"tsc -w\" \"electron .\"",
+    "start": "node dist/cli/index.js",
+    "gui": "electron dist/gui/main.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint src/**/*.ts",
+    "format": "prettier --write src/**/*.ts",
+    "clean": "rimraf dist",
+    "prepare": "husky install",
+    "build:extensions": "npm run build:vscode && npm run build:sublime",
+    "build:vscode": "cd extensions/vscode && vsce package",
+    "build:sublime": "cd extensions/sublime && python setup.py build",
+    "install:nemo": "python3 src/integrations/nemo/install.py",
+    "install:kde": "python3 src/integrations/kde/install.py"
+  },
+  "keywords": [
+    "script-generator",
+    "natural-language",
+    "bash",
+    "python",
+    "automation",
+    "nemo",
+    "kde-connect",
+    "alsania",
+    "ai-powered",
+    "gui",
+    "electron",
+    "desktop-app"
+  ],
+  "author": "Sigma <sigma@alsania.dev>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alsania-io/scrypgen.git"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "python": ">=3.13.2"
+  },
+  "dependencies": {
+    "@genkit-ai/mcp": "^1.21.0",
+    "boxen": "^7.1.0",
+    "chalk": "^5.3.0",
+    "commander": "^11.0.0",
+    "compromise": "^14.10.0",
+    "electron": "^39.1.0",
+    "fs-extra": "^11.1.1",
+    "handlebars": "^4.7.8",
+    "inquirer": "^9.2.0",
+    "natural": "^6.12.0",
+    "ora": "^6.3.0",
+    "socket.io": "^4.7.0",
+    "yaml": "^2.3.0"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.1",
+    "@types/handlebars": "^4.0.40",
+    "@types/inquirer": "^9.0.9",
+    "@types/jest": "^29.5.0",
+    "@types/node": "^20.4.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "concurrently": "^8.2.0",
+    "electron-builder": "^24.4.0",
+    "eslint": "^8.44.0",
+    "husky": "^8.0.3",
+    "jest": "^29.6.0",
+    "prettier": "^3.0.0",
+    "rimraf": "^5.0.0",
+    "ts-jest": "^29.1.0",
+    "ts-node": "^10.9.0",
+    "typescript": "^5.1.0",
+    "webpack": "^5.88.0",
+    "webpack-cli": "^5.1.0"
+  },
+  "@alsania-io": {
+    "aligned": true,
+    "protocol": "v1.0",
+    "sovereign": true,
+    "buildBy": "Sigma",
+    "poweredBy": "Echo"
+  }
+}
