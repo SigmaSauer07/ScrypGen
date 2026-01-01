@@ -332,7 +332,7 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 Main orchestrator class that coordinates all components.
 
 ```typescript
-const generator = new Universalscrypgenerator(config, logger);
+const generator = new UniversalScriptGenerator(config, logger);
 const result = await generator.generateScript(request);
 ```
 
